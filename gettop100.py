@@ -2,8 +2,15 @@ import sys
 import time
 import bs4
 import requests
+import os
+import pandas as pd
+import datetime
 
 from pythonbean.combinationBean import Combination
+from pythonbean.second_copy import getResponse
+from pythonbean.getRebalancestock import getRbResponse
+
+now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S').replace(':','_')
 
 sys.path.append('bean')
 headers = {
@@ -24,7 +31,7 @@ headers2 = {
     'cookie':'Cookie: device_id=24700f9f1986800ab4fcc880530dd0ed; s=c215pkjwcq; bid=85974d5c8b844517db5e365540222743_kh5kmssc; cookiesu=231604734535085; snbim_minify=true; is_overseas=0; Hm_lvt_1db88642e346389874251b5a1eded6e3=1605320458,1605322825,1605322867,1605346376; remember=1; xq_a_token=bbd3d0975ab8044b5393c071c927f68f46b0efe3; xq_id_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1aWQiOjUwMDcxMDgzODUsImlzcyI6InVjIiwiZXhwIjoxNjA3MTgwMzE2LCJjdG0iOjE2MDUzNDYzOTMwNDcsImNpZCI6ImQ5ZDBuNEFadXAifQ.YGqAwdcSRYdtH6kOZ-aGjYK_h6RwhDK167sWLpos4gbkds-JOUGhTDJ17ZhRdf6j9GU59he38FFlYoWiw0GezPagP18XdtccS-bixFoViCgdJBmsde74WYN5F3C68ThvDYDlCMLuU1bomosbTmfPTU9q1sdHtYF5hBxsznEQiYKXiKqKF-_fg9PPw0uxSfvPFdgK2tEdrlMUl_t3xk4MS2s2ZBuyx3WjckQ68EwEoVzDIHbWNDksBFM9zlQaYseUDT7Iy6Y_n1liz_27i_TCXgKpBv3ZmHhxrr3Zcjm56vepMU0AxVaOuhnSE26yUZQpC1aU2xCsXwxPl5mABfzLuQ; xqat=bbd3d0975ab8044b5393c071c927f68f46b0efe3; xq_r_token=352bedcf73f62ff28436ab06d1d490ff35be083f; xq_is_login=1; u=5007108385; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1605346391'
 }
 
-url = 'https://xueqiu.com/cubes/rank/arena_cubes.json?count=1&cube_level=2&list_param=list_overall&market=cn&page=1'
+url = 'https://xueqiu.com/cubes/rank/arena_cubes.json?count=100&cube_level=2&list_param=list_overall&market=cn&page=1'
 
 url_current = 'https://api.xueqiu.com/cubes/rebalancing/show_origin.json?rb_id=84584981&ymbol='
 
@@ -59,20 +66,66 @@ for k,v in dict_d:
                     combination_tmp = Combination(id,name,symbol,owner_id)
                     my_list.append(combination_tmp)
 
+                    #创建文件夹
 
+                    output_dir = './output/' + id + '_' + symbol + '_' + name + '/'
+                    isexists = os.path.exists(output_dir)
+                    if isexists:
+                        print('文件夹已存在')
+                    else:
+                        os.makedirs(output_dir)
 
-                    tmp_url = 'https://api.xueqiu.com/cubes/show.json?mix_rebalancing=true&ret_last_buy_rb_gid=true&symbol=ZH2128917&_=1605347420225&x=2.10004&_s=5ff080&_t=DA4FF810-74FC-4B3C-A65B-CFEE8A243EFA.9265171929.1605346596318.1605347250559'
+                   # tmp_url = 'https://api.xueqiu.com/cubes/show.json?mix_rebalancing=true&ret_last_buy_rb_gid=true&symbol=ZH2128917&_=1605347420225&x=2.10004&_s=5ff080&_t=DA4FF810-74FC-4B3C-A65B-CFEE8A243EFA.9265171929.1605346596318.1605347250559'
+                    tmp_url = 'https://api.xueqiu.com/cubes/show.json?_t=1NETEASEda8d1c2949d3ede8df407938af7c49da.5007108385.1604931242783.1604932210159&_s=a48f5d&ret_last_buy_rb_id=true&symbol=ZH2128917&mix_rebalancing=true'
                     x = requests.session()
                     # requests.utils.add_dict_to_cookiejar(x.cookies,{'cookie':'xq_a_token=ef60ae661da28e68f8918bc0e0d33ca59f30a148;xq_id_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1aWQiOjkyNjUxNzE5MjksImlzcyI6InVjIiwiZXhwIjoxNjA3NTA1MjM2LCJjdG0iOjE2MDQ5MTMyMzY3NDUsImNpZCI6IldpQ2lteHBqNUgifQ.Jq_uKZsWUM1wIp-Nni6Q2WGs1zWguHMV9WDi7lejluE-KbsxdOJU5tpXUgRsbirlbLGdx0xZ7BdZdjLlxM_w2aXgVQ0h5H3IiW6vG82bzhSm4WSZN5qs7zZs7Dg5fvLRxdVtFbmNsMKjCfSSLtGjAikgUfIyn7SMUwQVQAadz4-8-386C28nbiY0fNp8eahLkbyBgBvBDiWnQryMX_d5Ka7a2xFgZYL0e1FjF0kdvC3NR10dTCl15J04yt4RYiroVWp4-1vyb_h5RIJXEYzv2plvePRAzvbYH8B_dIcaendBVzjy-5xDXjN2EkDASq2LfiNqw_MD01sxLnq5fSuAPA;u=9265171929'})
-                    # crruent_sto = x.get(tmp_url)
-                    crruent_sto = requests.get(tmp_url,headers)
+                    crruent_sto = x.get(tmp_url)
+                    #crruent_sto = requests.get(tmp_url,headers)
 
                     print(requests.sessions)
                     crruent_soup = bs4.BeautifulSoup(crruent_sto.text,'lxml')
                     print(tmp_url)
-                    print('111111111111111111111111111111111111111111111111')
+                    print('------------------------ star get current soock ------------------------')
                     print(crruent_soup)
+                    time.sleep(5)
+                    curret_stock = getResponse(symbol)
+                    rb_id = tuple(curret_stock).__getitem__(0)
+                    current_result = list(curret_stock).__getitem__(1)
+
+                    list3 = []
+                    for i in list(current_result):
+                        list3.append(i.__dict__)
+
+                    df = pd.DataFrame(list3, columns=['stock_id','weight','segment_name','segment_id','stock_name'])
+                    df.to_csv(output_dir + '当前仓位详细情况' + now_time + '.csv', index=True)
+
+                    time.sleep(5)
+                    print('------------------------ star get last rebalance soock ------------------------')
+
+                    rebalance_result = getRbResponse(rb_id)
+                    for i in list(rebalance_result):
+                        i.myprint()
+
+                    list2 = []
+                    for i in list(getRbResponse('82177254')):
+                        i.myprint()
+                        list2.append(i.__dict__)
+                    df = pd.DataFrame(list2, columns=['id', 'rebalancing_id', 'stock_id', 'stock_name', 'stock_symbol',
+                                                      'volume', 'price', 'net_value', 'weight', 'target_weight',
+                                                      'prev_weight', 'prev_target_weight', 'prev_weight_adjusted',
+                                                      'prev_volume', 'prev_price', 'prev_net_value', 'proactive',
+                                                      'created_at', 'updated_at', 'target_volume',
+                                                      'prev_target_volume'])
+                    print(df)
+                    df.to_csv(output_dir + '上一次调仓情况'+ now_time + '.csv', index=True)
 
 for i in my_list:
     combination1 = i
     combination1.myprint()
+
+
+# import second
+
+
+def tocvs():
+    pass

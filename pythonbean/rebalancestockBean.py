@@ -24,4 +24,6 @@ class rebalancestock:
         self.target_volume = target_volume #目标体积？
         self.prev_target_volume = prev_target_volume #先前目标体积
 
-
+    def myprint(self):
+        print(' stock_id = ' + self.stock_id +
+              ' ,stock_name = ' + self.stock_name)
