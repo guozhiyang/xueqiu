@@ -1,6 +1,6 @@
 import bs4
 import requests
-import json
+import json,time
 from pythonbean.combinationBean import Combination
 from pythonbean.currentstockBean import currentstock
 def getResponse(symbol):
@@ -28,6 +28,7 @@ def getResponse(symbol):
 
     currentstockList = []
     id = ''
+    updated_at = ''
     dict_d = dict(json_data).items()
     for k,v in dict_d:
 
@@ -35,8 +36,12 @@ def getResponse(symbol):
             print(k, ':',v)
             for k2,v2 in dict(v).items():
                 print(k2,":",v2)
-                if k2 == 'prev_bebalancing_id':
+                if k2 == 'id':
                     id = str(v2)
+                if k2 == 'updated_at':
+                    updated_at = str(v2)
+                    timeArray = time.localtime(int(updated_at[0:10]))  # 秒数
+                    updated_at_nyr = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
                 if k2 == 'holdings':
                     for k3 in list(v2):
                         print(k3)
@@ -49,7 +54,7 @@ def getResponse(symbol):
                         segment_color = str(dict(k3).get('segment_color'))
                         proactive = str(dict(k3).get('proactive'))
                         volume = str(dict(k3).get('volume'))
-                        currentstock_tmp = currentstock(stock_id,weight,segment_name,segment_id,stock_name)
+                        currentstock_tmp = currentstock(stock_id,weight,segment_name,segment_id,stock_name,updated_at_nyr)
                         currentstockList.append(currentstock_tmp)
 
     return id,currentstockList

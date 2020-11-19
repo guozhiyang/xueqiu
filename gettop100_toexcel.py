@@ -11,6 +11,7 @@ import time
 from pythonbean.combinationBean import Combination
 from pythonbean.second_copy import getResponse
 from pythonbean.getRebalancestock import getRbResponse
+from myfunction.common import write_excel2
 
 now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S').replace(':','_')
 timeArray = time.localtime(int('1604293265928'[0:10]))  # 秒数
@@ -37,7 +38,7 @@ headers2 = {
     'cookie':'Cookie: device_id=24700f9f1986800ab4fcc880530dd0ed; s=c215pkjwcq; bid=85974d5c8b844517db5e365540222743_kh5kmssc; cookiesu=231604734535085; snbim_minify=true; is_overseas=0; Hm_lvt_1db88642e346389874251b5a1eded6e3=1605320458,1605322825,1605322867,1605346376; remember=1; xq_a_token=bbd3d0975ab8044b5393c071c927f68f46b0efe3; xq_id_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1aWQiOjUwMDcxMDgzODUsImlzcyI6InVjIiwiZXhwIjoxNjA3MTgwMzE2LCJjdG0iOjE2MDUzNDYzOTMwNDcsImNpZCI6ImQ5ZDBuNEFadXAifQ.YGqAwdcSRYdtH6kOZ-aGjYK_h6RwhDK167sWLpos4gbkds-JOUGhTDJ17ZhRdf6j9GU59he38FFlYoWiw0GezPagP18XdtccS-bixFoViCgdJBmsde74WYN5F3C68ThvDYDlCMLuU1bomosbTmfPTU9q1sdHtYF5hBxsznEQiYKXiKqKF-_fg9PPw0uxSfvPFdgK2tEdrlMUl_t3xk4MS2s2ZBuyx3WjckQ68EwEoVzDIHbWNDksBFM9zlQaYseUDT7Iy6Y_n1liz_27i_TCXgKpBv3ZmHhxrr3Zcjm56vepMU0AxVaOuhnSE26yUZQpC1aU2xCsXwxPl5mABfzLuQ; xqat=bbd3d0975ab8044b5393c071c927f68f46b0efe3; xq_r_token=352bedcf73f62ff28436ab06d1d490ff35be083f; xq_is_login=1; u=5007108385; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1605346391'
 }
 
-url = 'https://xueqiu.com/cubes/rank/arena_cubes.json?count=1&cube_level=2&list_param=list_overall&market=cn&page=1'
+url = 'https://xueqiu.com/cubes/rank/arena_cubes.json?count=100&cube_level=1&list_param=list_overall&market=cn&page=1'
 
 url_current = 'https://api.xueqiu.com/cubes/rebalancing/show_origin.json?rb_id=84584981&ymbol='
 
@@ -45,9 +46,9 @@ response_data = requests.get(url,headers=headers)
 
 soup = bs4.BeautifulSoup(response_data.text,'lxml')
 
-print(soup)
+#(soup)
 json_data = response_data.json()
-print(json_data)
+#print(json_data)
 
 count = 0
 
@@ -64,7 +65,7 @@ for k,v in dict_d:
             for stock_item_key,stock_item_value in dict(array_item).items():
                 #print(stock_item_key,':',stock_item_value)
                 if stock_item_key == 'symbol':
-                    print(str(dict(array_item).get('name')) + ":" + stock_item_value)
+                    #print(str(dict(array_item).get('name')) + ":" + stock_item_value)
                     id = str(dict(array_item).get('id'))
                     name = str(dict(array_item).get('name'))
                     symbol = str(dict(array_item).get('symbol'))
@@ -88,39 +89,44 @@ for k,v in dict_d:
                     crruent_sto = x.get(tmp_url)
                     #crruent_sto = requests.get(tmp_url,headers)
 
-                    print(requests.sessions)
+                    #print(requests.sessions)
                     crruent_soup = bs4.BeautifulSoup(crruent_sto.text,'lxml')
                     print(tmp_url)
                     print('------------------------ star get current soock ------------------------')
-                    print(crruent_soup)
-                    time.sleep(5)
+                    #print(crruent_soup)
+                    time.sleep(30)
                     curret_stock = getResponse(symbol)
                     rb_id = tuple(curret_stock).__getitem__(0)
                     current_result = list(curret_stock).__getitem__(1)
 
                     list3 = []
+
+
                     for i in list(current_result):
-                        list3.append(i.__dict__)
+                        dict_tmp = i.__dict__
+                        tmp_list = []
+                        for k8,v8 in dict(dict_tmp).items():
 
-                    df = pd.DataFrame(list3, columns=['stock_id','weight','segment_name','segment_id','stock_name','updated_at'])
-                    df.to_csv(output_dir + '当前仓位详细情况' + now_time + '.csv', index=True)
-
-                    time.sleep(5)
+                            tmp_list.append(v8)
+                        list3.append(tmp_list)
+                    time.sleep(30)
                     print('------------------------ star get last rebalance soock ------------------------')
 
                     list2 = []
                     rebalance_result = getRbResponse(rb_id)
                     for i in list(rebalance_result):
-                        list2.append(i.__dict__)
-                        print(i.__dict__)
-                    df = pd.DataFrame(list2, columns=['id', 'rebalancing_id', 'stock_id', 'stock_name', 'stock_symbol',
-                                                      'volume', 'price', 'net_value', 'weight', 'target_weight',
-                                                      'prev_weight', 'prev_target_weight', 'prev_weight_adjusted',
-                                                      'prev_volume', 'prev_price', 'prev_net_value', 'proactive',
-                                                      'created_at', 'updated_at', 'target_volume',
-                                                      'prev_target_volume'])
+                        tmp_list = []
+                        for k9, v9 in dict(i.__dict__).items():
 
-                    df.to_csv(output_dir + '上一次调仓情况'+ now_time + '.csv', index=True)
+                            tmp_list.append(v9)
+                        list2.append(tmp_list)
+                    if  count == 1:
+                        next_star_row = write_excel2(list3,list2,IsFirst=True,next_star_row=0,combinaname=name,top=count)
+                    else:
+                        next_star_row = write_excel2(list3, list2, IsFirst=False, next_star_row=next_star_row, combinaname=name,top=count)
+
+
+
 
 for i in my_list:
     combination1 = i

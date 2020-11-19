@@ -1,8 +1,9 @@
 import bs4
 import requests
-import json
+import json,time
 from pythonbean.combinationBean import Combination
 from pythonbean.rebalancestockBean import rebalancestock
+
 def getRbResponse(rb_id):
     '将调用详细仓库，封装为方法'
 
@@ -55,7 +56,14 @@ def getRbResponse(rb_id):
                         updated_at = str(dict(k3).get('updated_at'))
                         target_volume = str(dict(k3).get('target_volume'))
                         prev_target_volume = str(dict(k3).get('prev_target_volume'))
-                        rebalancestock_tmp = rebalancestock(id,rb_id,stock_id,stock_name,stock_symbol,volume,price,net_value,weight,target_weight,prev_weight,prev_target_weight,prev_weight_adjusted,prev_volume,prev_price,prev_net_value,proactive,created_at,updated_at,target_volume,prev_target_volume)
+
+                        timeArray = time.localtime(int(updated_at[0:10]))  # 秒数
+                        updated_at_nyr = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
+
+                        timeArray2 = time.localtime(int(created_at[0:10]))  # 秒数
+                        created_at_nyr = time.strftime("%Y-%m-%d %H:%M:%S", timeArray2)
+
+                        rebalancestock_tmp = rebalancestock(id,rb_id,stock_id,stock_name,stock_symbol,volume,price,net_value,weight,target_weight,prev_weight,prev_target_weight,prev_weight_adjusted,prev_volume,prev_price,prev_net_value,proactive,created_at_nyr,updated_at_nyr,target_volume,prev_target_volume)
                         rebalancestockList.append(rebalancestock_tmp)
 
     return rebalancestockList

@@ -67,3 +67,11 @@ class My_DataFrame(pd.DataFrame):
         self_copy.drop('CN', axis=1)
         self_copy.drop('RN', axis=1)
 
+if __name__ == '__main__':
+    import time
+
+
+    print(time.time())
+    timeArray = time.localtime(int('1604293265928'[0:10]))  # 秒数
+    otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
+    print(otherStyleTime)
