@@ -81,6 +81,64 @@ def write_excel2(current_data, rb_data, IsFirst=False, next_star_row=0, combinan
     xls.save('data6.xls')
 
     return next_star_row
+
+def write_excel3(current_data, rb_data, IsFirst=False, next_star_row=0, combinaname=None, top=1,filename=None):
+    if IsFirst:
+        xls = xlwt.Workbook()
+        sheet = xls.add_sheet('sheet', cell_overwrite_ok=True)
+    else:
+        rb = open_workbook(filename)
+        # rs  = rb.sheet_by_index(0)
+        xls = copy(rb)
+        sheet = xls.get_sheet(0)
+
+    sheet.write(2 + next_star_row, 0, top)
+    sheet.write(2 + next_star_row, 1, combinaname)
+
+    max_value = max(len(current_data), len(rb_data))
+
+    # 写表头和组合名称、组合排名
+    current2 = [['stock_id', 'weight', 'segment_name', 'segment_id', 'stock_name', '更新时间', '', '调仓id', 'id',
+                 'rebalancing_id', 'stock_id', 'stock_name', 'stock_symbol', 'volume', 'price', 'net_value', 'weight',
+                 'target_weight', 'prev_weight', 'prev_target_weight', 'prev_weight_adjusted', 'prev_volume',
+                 'prev_price', 'prev_net_value', 'proactive', 'created_at', 'updated_at', 'target_volume',
+                 'prev_target_volume']]
+    rb_data2 = []
+
+    if IsFirst:
+        for col in range(31):
+            for row in range(1):
+                try:
+                    sheet.write(row + 1, col + 2, current2[row][col])
+                except:
+                    #print("nothing")
+                    pass
+
+    for row in range(next_star_row + max_value):
+        for col in range(31):
+            try:
+                sheet.write(2 + next_star_row + row, 2 + col, current_data[row][col])
+            except:
+                #print("nothing")
+                pass
+
+    for row in range(next_star_row + max_value):
+        for col in range(31):
+            try:
+                sheet.write(2 + next_star_row + row, 2 + 8 + col, rb_data[row][col])
+            except:
+                #print("nothing")
+                pass
+
+    next_star_row = max_value + next_star_row + 1
+
+    xls.save(filename)
+
+    return next_star_row
+
+
+
+
 if __name__ == '__main__':
     # isexists = os.path.exists('./ouput')
     # print(isexists)

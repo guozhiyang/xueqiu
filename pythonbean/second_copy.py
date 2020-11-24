@@ -58,8 +58,18 @@ def getResponse(symbol):
                         currentstockList.append(currentstock_tmp)
 
     return id,currentstockList
+
+def takesegment_id(elem):
+    return elem.segment_id
+
 if __name__ == '__main__':
     print(tuple(getResponse('ZH2128917')).__getitem__(0) + "--------------123")
+
     for i in  list(tuple(getResponse('ZH2128917')).__getitem__(1)):
         currentstock_tmp2 =  i
         currentstock_tmp2.myprint()
+    print("1111111111111111111111111")
+    list22 = list(tuple(getResponse('ZH2128917')).__getitem__(1))
+    list22.sort(key=takesegment_id)
+    for i in list22:
+        i.myprint()
