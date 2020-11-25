@@ -1,11 +1,12 @@
 class rebalancestock:
     '一个组合对象'
 
-    def __init__(self,id,rebalancing_id,stock_id,stock_name,stock_symbol,volume,price,net_value,weight,target_weight,prev_weight,prev_target_weight,prev_weight_adjusted,prev_volume,prev_price,prev_net_value,proactive,created_at,updated_at,target_volume,prev_target_volume):
+    def __init__(self,id,rebalancing_id,stock_id,stock_name,rb_value,stock_symbol,volume,price,net_value,weight,target_weight,prev_weight,prev_target_weight,prev_weight_adjusted,prev_volume,prev_price,prev_net_value,proactive,created_at,updated_at,target_volume,prev_target_volume):
         self.id = id #递增ID，无实际含义
         self.rebalancing_id = rebalancing_id #此次调整ID
         self.stock_id = stock_id #股票ID
         self.stock_name = stock_name #股票名称
+        self.rb_value = rb_value  # 调整的具体值  --  单独自己添加的属性
         self.stock_symbol = stock_symbol #股票代码
         self.volume = volume #体积，意思没懂
         self.price = price #参考成交价
@@ -23,6 +24,7 @@ class rebalancestock:
         self.updated_at = updated_at #更新时间
         self.target_volume = target_volume #目标体积？
         self.prev_target_volume = prev_target_volume #先前目标体积
+
 
     def myprint(self):
         print(' stock_id = ' + self.stock_id +

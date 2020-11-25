@@ -18,8 +18,12 @@ from myfunction.common import write_excel3
 def takesegment_id(elem):
     return elem.segment_id
 
+def takecruweight(elem):
+    return -float(0 if elem.weight is None else elem.weight)
+
+
 def takerbsegment_id(elem):
-    return float(elem.price)
+    return -float(0 if elem.price is None else elem.price)
 
 my_list = []
 
@@ -99,6 +103,7 @@ def spider_xueqiu(level=1,filename=None,downloadcount=1,sleeptime=30):
 
                         list3 = []
                         current_result.sort(key=takesegment_id)
+                        current_result.sort(key=takecruweight)
                         for i in current_result:
                             dict_tmp = i.__dict__
                             tmp_list = []
@@ -180,7 +185,7 @@ if __name__ == '__main__':
         print(i[0])
         print(i[1])
         filename = str(now_time) + '/' + i[1]
-        spider_xueqiu(level=i[0],filename = filename,downloadcount= 1 , sleeptime=5)
+        spider_xueqiu(level=i[0],filename = filename,downloadcount= 2 , sleeptime=10)
         print('level = ' + str(i[0]) + '结束时间为：' + str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S').replace(':', '_')))
 
     mktodaydir('/home/xueqiu/' + str(now_time))

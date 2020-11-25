@@ -3,6 +3,7 @@ import requests
 import json,time
 from pythonbean.combinationBean import Combination
 from pythonbean.rebalancestockBean import rebalancestock
+from myfunction.common import castValuetoFloat
 
 def getRbResponse(rb_id):
     '将调用详细仓库，封装为方法'
@@ -36,26 +37,30 @@ def getRbResponse(rb_id):
                 if k2 == 'rebalancing_histories':
                     for k3 in list(v2):
                         print(k3)
-                        id = str(dict(k3).get('id'))
-                        stock_id = str(dict(k3).get('stock_id'))
-                        stock_name = str(dict(k3).get('stock_name'))
-                        stock_symbol = str(dict(k3).get('stock_symbol'))
-                        volume = str(dict(k3).get('volume'))
-                        price = str(dict(k3).get('price'))
-                        net_value = str(dict(k3).get('net_value'))
-                        weight = str(dict(k3).get('weight'))
-                        target_weight = str(dict(k3).get('target_weight'))
-                        prev_weight = str(dict(k3).get('prev_weight'))
-                        prev_target_weight = str(dict(k3).get('prev_target_weight'))
-                        prev_weight_adjusted = str(dict(k3).get('prev_weight_adjusted'))
-                        prev_volume = str(dict(k3).get('prev_volume'))
-                        prev_price = str(dict(k3).get('prev_price'))
-                        prev_net_value = str(dict(k3).get('prev_net_value'))
-                        proactive = str(dict(k3).get('proactive'))
-                        created_at = str(dict(k3).get('created_at'))
-                        updated_at = str(dict(k3).get('updated_at'))
-                        target_volume = str(dict(k3).get('target_volume'))
-                        prev_target_volume = str(dict(k3).get('prev_target_volume'))
+                        id = str(castValuetoFloat(dict(k3).get('id')))
+                        stock_id = str(castValuetoFloat(dict(k3).get('stock_id')))
+                        stock_name = str(castValuetoFloat(dict(k3).get('stock_name')))
+                        stock_symbol = str(castValuetoFloat(dict(k3).get('stock_symbol')))
+                        volume = str(castValuetoFloat(dict(k3).get('volume')))
+                        price = str(castValuetoFloat(dict(k3).get('price')))
+                        net_value = str(castValuetoFloat(dict(k3).get('net_value')))
+                        weight = str(castValuetoFloat(dict(k3).get('weight')))
+                        target_weight = str(castValuetoFloat(dict(k3).get('target_weight')))
+                        prev_weight = str(castValuetoFloat(dict(k3).get('prev_weight')))
+                        prev_target_weight = str(castValuetoFloat(dict(k3).get('prev_target_weight')))
+                        prev_weight_adjusted = str(castValuetoFloat(dict(k3).get('prev_weight_adjusted')))
+                        prev_volume = str(castValuetoFloat(dict(k3).get('prev_volume')))
+                        prev_price = str(castValuetoFloat(dict(k3).get('prev_price')))
+                        prev_net_value = str(castValuetoFloat(dict(k3).get('prev_net_value')))
+                        proactive = str(castValuetoFloat(dict(k3).get('proactive')))
+                        created_at = str(castValuetoFloat(dict(k3).get('created_at')))
+                        updated_at = str(castValuetoFloat(dict(k3).get('updated_at')))
+                        target_volume = str(castValuetoFloat(dict(k3).get('target_volume')))
+                        prev_target_volume = str(castValuetoFloat(dict(k3).get('prev_target_volume')))
+
+                        rb_value = str(round(float(float(weight) - float(prev_weight_adjusted)),2))
+
+                        print('计算调整值为：' + rb_value)
 
                         timeArray = time.localtime(int(updated_at[0:10]))  # 秒数
                         updated_at_nyr = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
@@ -63,7 +68,7 @@ def getRbResponse(rb_id):
                         timeArray2 = time.localtime(int(created_at[0:10]))  # 秒数
                         created_at_nyr = time.strftime("%Y-%m-%d %H:%M:%S", timeArray2)
 
-                        rebalancestock_tmp = rebalancestock(id,rb_id,stock_id,stock_name,stock_symbol,volume,price,net_value,weight,target_weight,prev_weight,prev_target_weight,prev_weight_adjusted,prev_volume,prev_price,prev_net_value,proactive,created_at_nyr,updated_at_nyr,target_volume,prev_target_volume)
+                        rebalancestock_tmp = rebalancestock(id,str(rb_id),stock_id,stock_name,rb_value,stock_symbol,volume,price,net_value,weight,target_weight,prev_weight,prev_target_weight,prev_weight_adjusted,prev_volume,prev_price,prev_net_value,proactive,created_at_nyr,updated_at_nyr,target_volume,prev_target_volume)
                         rebalancestockList.append(rebalancestock_tmp)
 
     return rebalancestockList
