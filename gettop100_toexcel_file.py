@@ -165,14 +165,14 @@ def copyDir(target_path = None , source_path= None):
 
 if __name__ == '__main__':
 
-    now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S').replace(':', '_')
+    now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S').replace(':', '_').replace(' ','_')
     timeArray = time.localtime(int('1604293265928'[0:10]))  # 秒数
     otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
     print(now_time)
     print(otherStyleTime)
 
     print(str(now_time) + ' 开始')
-
+    print(str(now_time)[0:10] + ' 开始')
     #创建文件夹
     level_list = [(1,'近三个月.xls'),(2,'近六个月.xls'),(3,'近十二个月.xls')]
 
@@ -184,7 +184,7 @@ if __name__ == '__main__':
         print(i)
         print(i[0])
         print(i[1])
-        filename = str(now_time) + '/' + i[1]
+        filename = str(now_time) + '/' + str(now_time)[0:10] + '_' + i[1]
         spider_xueqiu(level=i[0],filename = filename,downloadcount= 2 , sleeptime=10)
         print('level = ' + str(i[0]) + '结束时间为：' + str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S').replace(':', '_')))
 
