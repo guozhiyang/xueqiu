@@ -8,9 +8,9 @@ class rebalancestock:
         self.stock_name = stock_name #股票名称
         self.rb_value = rb_value  # 调整的具体值  --  单独自己添加的属性
         self.stock_symbol = stock_symbol #股票代码
-        self.volume = volume #体积，意思没懂
+        self.volume = volume #成交量
         self.price = price #参考成交价
-        self.net_value = net_value #网络价格？
+        self.net_value = net_value #净值？
         self.weight = weight #调整后的仓位百分比
         self.target_weight = target_weight #目前仓位百分比
         self.prev_weight = prev_weight #先前的仓位百分比

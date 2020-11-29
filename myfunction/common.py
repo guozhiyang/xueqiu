@@ -119,16 +119,22 @@ def write_excel3(current_data, rb_data, IsFirst=False, next_star_row=0, combinan
                  'target_weight', 'prev_weight', 'prev_target_weight', 'prev_weight_adjusted', 'prev_volume',
                  'prev_price', 'prev_net_value', 'proactive', 'created_at', 'updated_at', 'target_volume',
                  'prev_target_volume']]
-    rb_data2 = []
+    current2_chinese = [['股票ID', '占仓比例', '所属板块', '所属板块ID', '股票名称', '最新调整时间', '', '调仓id', '序列id',
+                 '此次调仓ID', '股票ID', '股票名称', '调仓差值', '股票代号', '成交量', '成交价格', '净值', '调整后仓位值',
+                 '目标仓位值', '先前仓位值', '先前目标仓位值', '先前仓位适应值', '先前成交量',
+                 '先前成交价格', '先前净值', '积极or消极', '创建时间', '更新时间', '目标成交量',
+                 '先前目标成交量']]
 
     if IsFirst:
         for col in range(32):
-            for row in range(1):
-                try:
-                    sheet.write(row + 1, col + 2, current2[row][col])
-                except:
-                    #print("nothing")
-                    pass
+            #for row in range(0):
+            row = 0
+            try:
+                sheet.write(row, col + 2 ,current2_chinese[row][col])
+                sheet.write(row + 1, col + 2, current2[row][col])
+            except:
+                #print("nothing")
+                pass
 
     for row in range(next_star_row + max_value):
         for col in range(32):
