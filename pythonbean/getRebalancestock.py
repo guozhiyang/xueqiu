@@ -33,6 +33,13 @@ def getRbResponse(rb_id):
         #print(k,v)
         if k == 'rebalancing':
             print(k, ':',v)
+            if (str(dict(v).get('category')) == 'sys_rebalancing'):
+                prev_rb_id = str(dict(v).get('prev_bebalancing_id'))
+                print('这是一个系统分红时，产生的调仓ID。 当前ID=' + str(rb_id) + '此前ID为,PREV_RB_ID = ' + str(prev_rb_id) )
+                return str(prev_rb_id)
+            else:
+                pass
+
             for k2,v2 in dict(v).items():
                 if k2 == 'rebalancing_histories':
                     for k3 in list(v2):
@@ -76,7 +83,15 @@ def getRbResponse(rb_id):
 import pandas as pd
 if __name__ == '__main__':
     list2 = []
-    for i in list(getRbResponse('82177254')):
+
+    getRb_result = getRbResponse('83687797')
+
+    while isinstance(getRb_result, str):
+        getRb_result = getRbResponse(getRb_result)
+    else:
+        pass
+
+    for i in list(getRb_result):
         i.myprint()
         print(i.__dict__)
         list2.append(i.__dict__)

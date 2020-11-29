@@ -115,6 +115,14 @@ def spider_xueqiu(level=1,filename=None,downloadcount=1,sleeptime=30):
 
                         list2 = []
                         rebalance_result = getRbResponse(rb_id)
+
+                        print('------------------------ charge is sys_rb or user_rb operation------------------------')
+
+                        while isinstance(rebalance_result, str):
+                            time.sleep(sleeptime)
+                            print('-------------------------- occur sys_rb sleep time -----------------------------')
+                            rebalance_result = getRbResponse(rebalance_result)
+
                         rblist = list(rebalance_result)
                         rblist.sort(key=takerbsegment_id)
                         for i in rblist:
@@ -185,7 +193,7 @@ if __name__ == '__main__':
         print(i[0])
         print(i[1])
         filename = str(now_time) + '/' + str(now_time)[0:10] + '_' + i[1]
-        spider_xueqiu(level=i[0],filename = filename,downloadcount= 2 , sleeptime=10)
+        spider_xueqiu(level=i[0],filename = filename,downloadcount= 3 , sleeptime=10)
         print('level = ' + str(i[0]) + '结束时间为：' + str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S').replace(':', '_')))
 
     mktodaydir('/home/xueqiu/' + str(now_time))
