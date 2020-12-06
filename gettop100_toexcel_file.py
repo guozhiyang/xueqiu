@@ -54,7 +54,8 @@ def spider_xueqiu(level=1,filename=None,downloadcount=1,sleeptime=30):
     soup = bs4.BeautifulSoup(response_data.text, 'lxml')
 
     json_data = response_data.json()
-
+    print('--------------------------- 开始爬取： '+ url + '--------------------')
+    print('---返回结果：' + str(json_data))
     count = 0
     dict_d = dict(json_data).items()
     for k, v in dict_d:
