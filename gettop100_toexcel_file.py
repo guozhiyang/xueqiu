@@ -30,7 +30,7 @@ my_list = []
 def spider_xueqiu(level=1,filename=None,downloadcount=1,sleeptime=30):
     headers = {
         'User-agent': 'Xueqiu iPhone 12.22',
-        'cookie': 'u=9265171929; xq_a_token=fca5daea76f2ce00f246e6a21eb364f07bb5b575; xq_id_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1aWQiOjkyNjUxNzE5MjksImlzcyI6InVjIiwiZXhwIjoxNjA5ODU2ODcyLCJjdG0iOjE2MDcyNjQ4NzIyMTUsImNpZCI6IldpQ2lteHBqNUgifQ.j0KGh8s9PivpumuoM8wcwJHXVrDbVVOxlUy1FzXIGY5zo-fu9jmDdjtggyrBy8S_m-hw1qRlErWp5SAksDrFsNGVpTA1CXSj2jvQoClUyJCSqsLQFz5Q73huGm3GR75LEDSvJBEpCE6SrVPYk9OsCtVRr90j04YEOfQtK32BdTM_M-EAmehvLTpb_AfuKkUFs3Zu6iEBabeB8lf08WSFQyFC8MyF-nxZCy2Va370g7Brglas_slLJ9b_g80q0q9AAE7HPDWsyW2ruQhVGI8dC1_2gOZvi3B796uxCh-RDAoX77xddffjRp1FU4hMPJu4nucVO16dKm-_mqLRLpYI0A; acw_tc=2760821f16072648730606278eb95bb028b9cd956574a9d282b8cf0be79fff; s=c412ff28eq',
+        'cookie': 'xq_a_token=e4d5a3cf69a131e0dd1f402eb65e66dc3fcdab27;xq_id_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1aWQiOjUwMDcxMDgzODUsImlzcyI6InVjIiwiZXhwIjoxNjEyNjAwNjExLCJjdG0iOjE2MTAwMDg2MTEyNzEsImNpZCI6IldpQ2lteHBqNUgifQ.dbBPgvEBMjy67oXq6gmFRi9Q8VCID1FOliYIBNNHGhFrWQPmK7AOXB3H0ORZ2Gd_3sQvqSPzUzf8UvWErL7dTx1MA4MKf0kPCM_P4-KOR88xuRDpE9PSh-N_JKzoriiQdGyN_Cy1kp1qvzQf-dTTRms06oPUvNJnPHCZZQqziGIN7JIgLvHv2zLNiD6d-Kis86vszSNn6o3SGdkK8rxMP33h7TM0NCftb7nVpTHmVrWjkcmEtEFTfQ0xUPuLCV-l2yJthjaJMySkdmrzQuw0Adj-X7k4Od-YrnbJFeI_WvZ0E2qLjZfsLf1q4pkG7Ita2ztGBAJx2rkruwILp5HJ-Q;u=5007108385',
         'X-Device-ID': 'DA4FF810-74FC-4B3C-A65B-CFEE8A243EFA',
         'Accept-Language': 'zh-Hans-CN;q=1',
         'X-Device-OS': 'iOS 14.0',
