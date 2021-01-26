@@ -92,3 +92,18 @@ https://api.xueqiu.com/cubes/show.json?_t=1NETEASEda8d1c2949d3ede8df407938af7c49
 以上cookie替换后，在替换完文件后即可完成整体设计
 ```
 
+
+
+
+
+## 20200126替换cookie方案
+
+![1611664719238](C:\Users\61631\AppData\Roaming\Typora\typora-user-images\1611664719238.png)
+
+
+
+直接采用以上cookie，替换以上3个python文件中的cookie值，即可。
+
+注意：：：：！！！！ 目前测试时，使用wifi节流手机的流量后，用burp suite可以repeater访问 api。但是使用PC端是访问不了了。
+
+在全部替换cookie后，又可以访问。
